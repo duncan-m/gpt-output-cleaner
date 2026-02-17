@@ -300,27 +300,27 @@
       box-shadow: 0 0 0 3px rgba(110,106,255,0.12), var(--shadow-sm);
     }
 
-    /* Input box: dark so white ChatGPT content is visible */
+    /* Input box: dark so white ChatGPT content is visible.
+       Force all pasted child elements to render white — without this,
+       pasted inline colour styles override the box text colour.       */
     #input {
       background: #2b2b2b;
-      color: #e8e8e8;
       border-color: #444;
     }
+    #input * { color: #ffffff !important; }
     #input:focus-within {
       border-color: #6e6aff;
       box-shadow: 0 0 0 3px rgba(110,106,255,0.18), var(--shadow-sm);
     }
     #input.box:empty::before { color: #777; }
 
-    /* Output box: white bg, force all child content to user-chosen colour
-       (overrides any #fff or white inline colours pasted from ChatGPT)   */
+    /* Output box: white bg, user-chosen colour cascades to all children,
+       overriding any #fff inline colours that arrived from ChatGPT.   */
     #output {
       background: #ffffff;
       color: var(--output-color, #000000);
     }
-    #output * {
-      color: inherit !important;
-    }
+    #output * { color: inherit !important; }
 
     /* Placeholder text */
     .box:empty::before {
@@ -335,11 +335,11 @@
       line-height: 1.5;
     }
 
-    /* ── Pasted content styles ──────────────────────────────── */
-    .box h1, .box h2, .box h3, .box h4 { margin: 0.7em 0 0.35em; line-height: 1.3; }
-    .box p  { margin: 0.45em 0; }
+    /* ── Pasted content styles — default line-height 1.15 ──────── */
+    .box h1, .box h2, .box h3, .box h4 { margin: 0.7em 0 0.35em; line-height: 1.15; }
+    .box p  { margin: 0.45em 0; line-height: 1.15; }
     .box ul, .box ol { margin: 0.5em 0 0.5em 1.4em; }
-    .box li { margin: 0.2em 0; }
+    .box li { margin: 0.2em 0; line-height: 1.15; }
     .box hr { border: 0; border-top: 1px solid var(--border); margin: 0.8em 0; }
     .box table { border-collapse: collapse; width: 100%; }
     .box td, .box th { border: 1px solid var(--border); padding: 6px 10px; font-size: 13px; }
@@ -347,13 +347,13 @@
 
     /* ── Compact preset overrides ───────────────────────────── */
     /* px = pt × 1.333 so sizes survive paste into Word/Docs    */
-    #output.style-compact p                            { font-size:13.33px; margin-top:0;       margin-bottom:4px;    }
-    #output.style-compact h1                           { font-size:21.33px; margin-top:8px;      margin-bottom:2.67px; }
-    #output.style-compact h2                           { font-size:18.67px; margin-top:18.67px;  margin-bottom:2.67px; }
-    #output.style-compact h3                           { font-size:16px;    margin-top:8px;      margin-bottom:2.67px; }
-    #output.style-compact h4                           { font-size:13.33px; margin-top:8px;      margin-bottom:2.67px; }
-    #output.style-compact li                           { margin-top:8px;    margin-bottom:0; }
-    #output.style-compact td, #output.style-compact th { font-size:13.33px; padding:0; }
+    #output.style-compact p                            { font-size:13.33px; margin-top:0;       margin-bottom:4px;    line-height:1.1; }
+    #output.style-compact h1                           { font-size:21.33px; margin-top:8px;      margin-bottom:2.67px; line-height:1.1; }
+    #output.style-compact h2                           { font-size:18.67px; margin-top:18.67px;  margin-bottom:2.67px; line-height:1.1; }
+    #output.style-compact h3                           { font-size:16px;    margin-top:8px;      margin-bottom:2.67px; line-height:1.1; }
+    #output.style-compact h4                           { font-size:13.33px; margin-top:8px;      margin-bottom:2.67px; line-height:1.1; }
+    #output.style-compact li                           { margin-top:8px;    margin-bottom:0;     line-height:1.1; }
+    #output.style-compact td, #output.style-compact th { font-size:13.33px; padding:0;          line-height:1.1; }
     #output.style-compact table                        { border-collapse:collapse; }
 
     /* ── Responsive ─────────────────────────────────────────── */
@@ -508,16 +508,25 @@
   /* ── Style presets ── */
   // px = pt × 1.333 so sizes survive paste into Word / Google Docs
   const PRESETS = {
-    default: null,
+    // Default: just set line-height; everything else uses stylesheet rules
+    default: {
+      p:  "line-height:1.15;",
+      h1: "line-height:1.15;",
+      h2: "line-height:1.15;",
+      h3: "line-height:1.15;",
+      h4: "line-height:1.15;",
+      li: "line-height:1.15;",
+    },
+    // Compact: px = pt × 1.333 so sizes survive paste into Word / Google Docs
     compact: {
-      p:     "font-size:13.33px;margin-top:0;margin-bottom:4px;",
-      h1:    "font-size:21.33px;margin-top:8px;margin-bottom:2.67px;",
-      h2:    "font-size:18.67px;margin-top:18.67px;margin-bottom:2.67px;",
-      h3:    "font-size:16px;margin-top:8px;margin-bottom:2.67px;",
-      h4:    "font-size:13.33px;margin-top:8px;margin-bottom:2.67px;",
-      li:    "margin-top:8px;margin-bottom:0;",
-      td:    "font-size:13.33px;padding:0;",
-      th:    "font-size:13.33px;padding:0;",
+      p:     "font-size:13.33px;margin-top:0;margin-bottom:4px;line-height:1.1;",
+      h1:    "font-size:21.33px;margin-top:8px;margin-bottom:2.67px;line-height:1.1;",
+      h2:    "font-size:18.67px;margin-top:18.67px;margin-bottom:2.67px;line-height:1.1;",
+      h3:    "font-size:16px;margin-top:8px;margin-bottom:2.67px;line-height:1.1;",
+      h4:    "font-size:13.33px;margin-top:8px;margin-bottom:2.67px;line-height:1.1;",
+      li:    "margin-top:8px;margin-bottom:0;line-height:1.1;",
+      td:    "font-size:13.33px;padding:0;line-height:1.1;",
+      th:    "font-size:13.33px;padding:0;line-height:1.1;",
       table: "border-collapse:collapse;",
     },
   };
@@ -569,6 +578,9 @@
     if (opts.removeBulletGaps)  removeBulletGaps(container);
     if (opts.normaliseHeadings) normaliseFakeHeadings(container);
     trimTextNodes(container);
+
+    // Strip inline font-size/line-height/margin so CSS preset rules can override them
+    stripInlineFontSizes(container);
 
     output.innerHTML = container.innerHTML;
 
@@ -668,6 +680,21 @@
     });
   }
 
+  function stripInlineFontSizes(root) {
+    // Pasted ChatGPT HTML often has inline font-size/line-height/margin on block
+    // elements. Those beat CSS class rules, so compact preset sizes never apply.
+    const tags = ["p","h1","h2","h3","h4","h5","h6","li","td","th"];
+    root.querySelectorAll(tags.join(",")).forEach(el => {
+      if (!el.style.cssText) return;
+      el.style.removeProperty("font-size");
+      el.style.removeProperty("line-height");
+      el.style.removeProperty("margin");
+      el.style.removeProperty("margin-top");
+      el.style.removeProperty("margin-bottom");
+      if (!el.style.cssText.trim()) el.removeAttribute("style");
+    });
+  }
+
   function trimTextNodes(root) {
     const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
     const toDrop = [];
@@ -685,6 +712,22 @@
     const color = outputColor.value || "#000000";
     const rules = PRESETS[stylePreset.value] || null;
     const clone = output.cloneNode(true);
+
+    // Strip inline color from every element via the raw style attribute.
+    // el.style.color is unreliable when CSS !important is active — the browser
+    // reports the computed value, not the attribute value. Working on the raw
+    // getAttribute string bypasses that and removes white colours reliably.
+    clone.querySelectorAll("*").forEach(el => {
+      const attr = el.getAttribute("style");
+      if (!attr) return;
+      const stripped = attr
+        .replace(/\bcolor\s*:[^;]+;?/gi, "")
+        .trim()
+        .replace(/;$/, "");
+      if (stripped) el.setAttribute("style", stripped);
+      else el.removeAttribute("style");
+    });
+
     if (rules) {
       Object.entries(rules).forEach(([tag, css]) => {
         clone.querySelectorAll(tag).forEach(el => {
