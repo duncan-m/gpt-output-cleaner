@@ -4,6 +4,7 @@ Simple single page app that cleans GPT output.
 ## What it does
 - Strips out additional spaces and section breaks
 - Removes uneccssary html
+- Take content from GPT or old content from a Google doc you want to clean up
 
 ## How to use
 1. Open the html file in a browswer
