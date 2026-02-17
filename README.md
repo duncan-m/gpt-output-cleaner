@@ -10,3 +10,6 @@ How to use:
 2. Paste in your copied GPT content
 3. Choose formtting option if you like default or compact
 4. Copy the output and paste into a doc
+
+How it looks when loaded
+(https://github.com/duncan-m/gpt-output-cleaner/blob/main/gpt-cleaner-screenshot.png)
