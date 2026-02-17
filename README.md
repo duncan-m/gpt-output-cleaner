@@ -19,4 +19,4 @@ Simple single page app that cleans GPT output.
 
 
 ### With content from GPT
-![Screenshot of the cleaner.](https://github.com/duncan-m/gpt-output-cleaner/blob/main/no-content.png)
+![Screenshot of the cleaner.](https://github.com/duncan-m/gpt-output-cleaner/blob/main/example.png)
