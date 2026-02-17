@@ -12,4 +12,5 @@ How to use:
 4. Copy the output and paste into a doc
 
 How it looks when loaded
-(https://github.com/duncan-m/gpt-output-cleaner/blob/main/gpt-cleaner-screenshot.png)
+
+![Screenshot of the cleaner.](https://github.com/duncan-m/gpt-output-cleaner/blob/main/gpt-cleaner-screenshot.png)
